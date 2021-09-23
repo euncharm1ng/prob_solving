@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-typedef long long ll;
+typedef unsigned long long ll;
 
 int a, m;
 ll *bags, carrier = 0, lowerbound = 0;
@@ -13,22 +13,19 @@ main()
 	bags = (ll*)malloc(sizeof(ll) * m + 1);
 	memset(bags, 0, sizeof(ll) * m + 1);
 
-//	printf("m is %d\n", m);
-	while(scanf("%d", &a) == 1 && !feof(stdin)){
+	while(scanf("%d", &a) == 1 && !feof(stdin))
 		bags[a]++;
-	}
 /*
-	for(int i = 0; i < m + 1; i++){
+	printf("m is %d\n", m);
+	for(int i = 0; i < m + 1; i++)
 		printf("%lld\n", bags[i]);
-	}
 */
 	carrier += bags[m];
-
-	while(bags[lowerbound] == 0) lowerbound++;
-	if(lowerbound > m) lowerbound = m;
 	bags[m] = 0;
+	while(lowerbound < m && bags[lowerbound] == 0) 
+		lowerbound++;
 
-//	printf("lowerbound start with %d\n", lowerbound);
+	//printf("lowerbound start with %lld\n", lowerbound);
 
 	for(ll i = m - 1; i > lowerbound; i--){
 		if(bags[i] == 0) continue;
@@ -39,10 +36,11 @@ main()
 				bags[i] = 0;
 			}
 			else{
-				carrier += bags[i];
-				bags[i] = 0;
+				carrier += bags[lowerbound];
+				bags[i] -= bags[lowerbound];
 				bags[lowerbound] = 0;
-				while(bags[lowerbound] == 0) lowerbound++;
+				while(lowerbound < i && bags[lowerbound] == 0) lowerbound++;
+				i++;
 			}
 		}
 		else{
@@ -50,7 +48,7 @@ main()
 			bags[i] = 0;
 		}
 	}
-//	printf("lowerbound == %d, bags[lowerbound] == %lld\n", lowerbound, bags[lowerbound]);
+//	printf("lowerbound == %lld, bags[lowerbound] == %lld\n", lowerbound, bags[lowerbound]);
 	if(bags[lowerbound] > 0){
 		if(lowerbound * 2 <= m){
 			carrier += bags[lowerbound] / 2 + bags[lowerbound] % 2;
