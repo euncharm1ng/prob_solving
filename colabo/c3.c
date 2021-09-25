@@ -30,7 +30,8 @@ doBFS(int starting_city, int dist_index) // 0:alpha, 1:beta, 2:n
 int
 main()
 {
-	int a, b, min = 99999;
+	int a, b;
+	long min;
 	scanf("%d %d %d %d %d", &p, &q, &r, &n, &m); // n cities, m lines
 	graph = (int**)malloc(sizeof(int*) * (n + 1));
 	distance = (int**)malloc(sizeof(int*) * (n + 1));
@@ -54,15 +55,20 @@ main()
 	doBFS(1, 0);
 	doBFS(2, 1);
 	doBFS(n, 2);
+	/*
 	for(int i =0; i < n + 1; i++){
 		printf("%d - ", i);
 		printf("%d %d %d\n", distance[i][0], distance[i][1], distance[i][2]);
 	}
-	for(int i = 0; i <= n; i++){
-		if(min > distance[i][0] * p + distance[i][1] * q + distance[i][2] * r)
-			min = distance[i][0] * p + distance[i][1] * q + distance[i][2] * r;
+	*/
+	long sub_min;
+	min = distance[1][0] * p + distance[1][1] * q + distance[1][2] * r;
+	for(int i = 2; i <= n; i++){
+		sub_min = distance[i][0] * p + distance[i][1] * q + distance[i][2] * r;
+		if(min > sub_min)
+			min = sub_min;
 	}
-	printf("%d\n", min);
+	printf("%ld\n", min);
 /*
 	for(int i = 0; i < n + 1; i++){
 		printf("%d- ", i);
