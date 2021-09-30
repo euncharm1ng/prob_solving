@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#define MAXCITIES 40000
 int p, q, r, n, m, **graph, **distance, *queue;
 
 void
@@ -13,6 +12,7 @@ doBFS()
 		else start = k;
 		int right = 0, left = 0;
 		distance[k][start] = 0;
+
 		for(int i = 1; right < graph[start][0]; right++, i++){
 			queue[right] = graph[start][i];
 			distance[k][queue[right]] = 1;
@@ -36,11 +36,13 @@ int
 main()
 {
 	int a, b;
-	long min;
+	long min, sub_min;
+
 	scanf("%d %d %d %d %d", &p, &q, &r, &n, &m); // n cities, m lines
 	graph = (int**)malloc(sizeof(int*) * (n + 1));
 	queue = (int*)malloc(sizeof(int) * (n + 1));
 	distance = (int**)malloc(sizeof(int*) * 3);
+
 	for(int i = 0; i < 3; i++){
 		distance[i] = (int*)malloc(sizeof(int) * (n + 1));
 		memset(distance[i], -1, sizeof(int) * (n + 1));
@@ -57,19 +59,8 @@ main()
 		graph[b][++graph[b][0]] = a;
 	}
 
-
 	doBFS();
-	/*
-	for(int j = 0; j < 3; j++){
-		printf("dist: ");
-		for(int i =0; i < n + 1; i++){
-			printf("%d ", distance[j][i]);
-		}
-		puts("");
-	}
-	*/
-	
-	long sub_min;
+
 	min = distance[0][1] * r + distance[1][1] * p + distance[2][1] * q;
 	for(int i = 2; i <= n; i++){
 		sub_min = distance[0][i] * r + distance[1][i] * p + distance[2][i] * q;
