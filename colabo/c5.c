@@ -83,6 +83,7 @@ try_insert(int curr)
 	}
 	return 0;
 }
+
 int
 main()
 {
@@ -117,7 +118,7 @@ main()
 		printf("No solution possible\n");
 		return 0;
 	}
-	sort_poly(poly, polyhw, n);
+	//sort_poly(poly, polyhw, n);
 	//====
 	for(int i = 0; i < n; i++){
 		for(int j = 0; j < 4; j++){
