@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int n, h, w, block_cnt = 0, square_width, max_width = 0, temp;
-int ***poly, polyhw[5][3], **ans;
-float root;
+int n, square_width, ***poly, polyhw[5][3], **ans;
 
 float
 my_sqrt(float num)
@@ -22,29 +20,6 @@ max(int a, int b)
 {
 	if(a > b) return a;
 	else return b;
-}
-
-void
-sort_poly()
-{
-	for(int i = 0; i < n; i++){
-		int swap = i, max_side = max(polyhw[i][0], polyhw[i][1]);
-		for(int j = i + 1; j < n; j++){
-			int curr = max(polyhw[j][0], polyhw[j][1]);
-			if(max_side < curr){
-				max_side = curr;
-				swap = j;
-			}
-		}
-		int** temp = poly[swap];
-		poly[swap] = poly[i];
-		poly[i] = temp;
-		int temph = polyhw[swap][0], tempw = polyhw[swap][1], tempn = polyhw[swap][2];
-		polyhw[swap][0] = polyhw[i][0];
-		polyhw[swap][1] = polyhw[i][1];
-		polyhw[swap][2] = polyhw[i][2];
-		polyhw[i][0] = temph; polyhw[i][1] = tempw; polyhw[i][2] = tempn;
-	}
 }
 
 void
@@ -75,8 +50,7 @@ try_insert(int curr)
 			}
 
 			if(chkroll == 1) chkroll = 0;
-			else if(curr == n - 1) return 1;
-			else if(try_insert(curr+1) == 1) return 1;
+			else if(curr == n - 1 || try_insert(curr+1) == 1) return 1;
 
 			rollback(polyhw[curr][2]);
 		}
@@ -87,7 +61,9 @@ try_insert(int curr)
 int
 main()
 {
-	
+	int h, w, block_cnt = 0, max_width = 0, temp;
+	float root;
+
 	poly = (int***)malloc(sizeof(int**) * 5);
 	for(int i = 0; i < 5; i++){
 		poly[i] = (int**)malloc(sizeof(int*) * 4);
@@ -112,39 +88,26 @@ main()
 			}
 		}
 	}
-	printf("__%d\n", block_cnt);
-	root = my_sqrt(block_cnt);
-	if((int)root != root || root < max_width){
-		printf("No solution possible\n");
-		return 0;
-	}
-	//sort_poly(poly, polyhw, n);
-	//====
-	for(int i = 0; i < n; i++){
-		for(int j = 0; j < 4; j++){
-			for(int k = 0; k < 4; k++){
-				printf("%d ", poly[i][j][k]);
-			}
-			puts("");
-		}
-		puts("--");
-	}
-	for(int i = 0; i < 5; i++){
-		printf("%d %d\n", polyhw[i][0], polyhw[i][1]);
-	}
-	//====
-	square_width = root;
-	ans = (int**)malloc(sizeof(int*) * square_width);
-	for(int i = 0; i < square_width; i++){
-		ans[i] = (int*)malloc(sizeof(int) * square_width);
-		memset(ans[i], 0, square_width * sizeof(int));
-	}
-	printf("try insert: %d === \n", try_insert(0));
 
-	for(int i = 0; i < square_width; i++){
-		for(int j = 0; j < square_width; j++){
-			printf("%d ", ans[i][j]);
+	root = my_sqrt(block_cnt);
+	if((int)root != root || root < max_width);
+	else{
+		square_width = root;
+		ans = (int**)malloc(sizeof(int*) * square_width);
+		for(int i = 0; i < square_width; i++){
+			ans[i] = (int*)malloc(sizeof(int) * square_width);
+			memset(ans[i], 0, square_width * sizeof(int));
 		}
-		puts("");
+
+		if (try_insert(0) == 1){
+			for(int i = 0; i < square_width; i++){
+				for(int j = 0; j < square_width; j++)
+					printf("%d ", ans[i][j]);
+				puts("");
+			}
+			return 0;
+		}
 	}
+	puts("No solution possible");
+	return 0;
 }
