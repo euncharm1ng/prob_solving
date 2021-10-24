@@ -52,7 +52,7 @@ main()
 		if(f[fpos] < g[gpos]) insert('f');
 		else if(f[fpos] > g[gpos]) insert('g');
 		else{
-			if(f[fpos+1] > g[gpos]){
+			if(f[fpos+1] > g[gpos+1]){
 				insert('f');
 				gpos += 2;
 			}
@@ -74,6 +74,7 @@ main()
 	fg[fgpos] = 2000000001;
 	fg[fgpos+1] = fg[fgpos-1];
 	fgpos += 2;
+	//for(int i = 0; i < fgpos; i+=2) printf("%d %d\n", fg[i], fg[i+1]);
 	
 	int currpos = 0;
 	while(fg[currpos] <= p) currpos += 2;
@@ -82,10 +83,11 @@ main()
 		printf("%d\n", ans % 10007);
 		return 0;
 	}
-	ans += do_modulo((long)fg[currpos] - p, fg[currpos-1]);
+	else ans += do_modulo((long)fg[currpos] - p, fg[currpos-1]);
 
 	while(fg[currpos+2] <= q){
 		ans += do_modulo((long)fg[currpos+2] - fg[currpos], fg[currpos+1]);
+		ans = ans% 10007;
 		currpos += 2;
 	}
 	ans += do_modulo((long)q - fg[currpos] + 1, fg[currpos+1]);
