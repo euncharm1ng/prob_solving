@@ -29,6 +29,7 @@ calc(int start, int dir)
 		else chkr = 0;
 	}
 }
+
 int
 main()
 {
