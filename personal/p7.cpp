@@ -11,26 +11,36 @@ ceiling(int a, int b)
 { return (a + b -1) / b; }
 
 int
+find_next_start(int start, int end, int prev)
+{
+	while(start+1 < end){
+		int mid = (start + end) / 2;
+		if(task[mid] == prev) start = mid;
+		else end = mid;
+	}
+	return end;
+}
+
+int
 bin_search(int bull)
 {
-	/*
-	//printf("\n%d bulls:\n", bull);
-	for(int i = 0; i < n; i++){
-		//printf("\tday %d: ", i);
-		for(int j = 0; j < bull && i*bull+j < m; j++){
-			//printf("%d+%d ", task[i*bull+j], i*bull+j);
-			if(task[i*bull+j]+d <= i+1) return -1;
+	int duedate = 1-d, startdate = 1;
+	for(int i = 0; i < m;){
+		int end = i+bull-1;
+		if(end >= m) end = m-1;
+		if(task[i] < duedate) return -1;
+		if(task[i] > startdate){
+			startdate = task[i];
+			duedate = startdate - d;
 		}
-		//puts("");
-	}
-	return 1;
-	*/
-
-	int day = 1, task_cnt = 0;
-	for(int i = 0; i < m; i++){
-		if(task[i]+d < day+1) return -1;
-		task_cnt++;
-		if(task_cnt == bull){task_cnt = 0; day++;}
+		else if(task[end] > startdate){
+			i = find_next_start(i, end, task[i]);
+			startdate = task[i];
+			duedate = startdate - d;
+		}
+		else{
+			i += bull; duedate++; startdate++;
+		}
 	}
 	return 1;
 }
@@ -40,29 +50,17 @@ main()
 {
 	int mid;
 	scanf("%d %d %d", &n, &d, &m);
-
-	min_k = ceiling(m, n) - 1;
-	max_k = ceiling(m, d) + 1; // +1 or not?
-
 	for(int i = 0; i < m; i++)
 		scanf("%d", &task[i]);
 	
 	sort(task, task+m);
-
-	//for(int i = 0; i < m; i++) printf("%d ", task[i]);
+	min_k = ceiling(m, n+d) - 1;
+	max_k = m;
 
 	while(min_k + 1 < max_k){
 		mid = (max_k + min_k) / 2;
-		printf("\nmin: %d, mid: %d, max: %d\n", min_k, mid, max_k);
-		if(bin_search(mid) == 1){
-			max_k = mid;
-			puts("return 1");
-		}
-		else{
-			min_k = mid;
-			puts("return -1");
-		}
+		if(bin_search(mid) == 1) max_k = mid;
+		else min_k = mid;
 	}
-	//printf("%d\n", max_k);
-	printf("ans--> %d\n", max_k);
+	printf("%d\n", max_k);
 }
