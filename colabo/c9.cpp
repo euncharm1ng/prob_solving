@@ -19,10 +19,11 @@ main()
 	
 	for(int i = 0; i < n; i++) printf("%d %d\n", applicant[i].first, applicant[i].second);
 
-	int smaller = 0, ans = 0;
+	int ans = 0, next_first = -1; next_second = -1;
 	for(int i = 0; i < n; i++){
+		if(applicant[i].first > next_first && applicant[i].second > 
 		for(int j = i+1; j < n; j++){
-			if(applicant[j].second < applicant[i].second) ans++;
+			if(applicant[j].second < applicant[i].second) next_ind = j;
 		}
 	}
 	printf("ans --> %d\n", ans);
