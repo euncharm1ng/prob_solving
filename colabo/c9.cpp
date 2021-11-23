@@ -7,24 +7,30 @@ using namespace std;
 int 
 main()
 {
-	int a, b, n;
+	int a, b, n, group[8000] = {0}, ans = 0;
 	vector<pair<int, int> > applicant;
+
 	scanf("%d", &n);
 	for(int i = 0; i < n; i++){
 		scanf("%d %d", &a, &b);
-		applicant.push_back({a, b});
+		applicant.push_back(make_pair(a, b));
+		group[i] = i;
 	}
 
 	sort(applicant.begin(), applicant.end());
 	
-	for(int i = 0; i < n; i++) printf("%d %d\n", applicant[i].first, applicant[i].second);
-
-	int ans = 0, next_first = -1; next_second = -1;
 	for(int i = 0; i < n; i++){
-		if(applicant[i].first > next_first && applicant[i].second > 
 		for(int j = i+1; j < n; j++){
-			if(applicant[j].second < applicant[i].second) next_ind = j;
+			if(applicant[j].second < applicant[i].second){
+				if(group[j] != j) group[i] = group[j];
+				else group[j] = group[i];
+			}
 		}
 	}
-	printf("ans --> %d\n", ans);
+	
+	for(int i = 0; i < n; i++){
+		if(group[i] == i) ans++;
+	}
+
+	printf("%d\n", ans);
 }
