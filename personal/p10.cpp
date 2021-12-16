@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int n, start_char = 0, end_char = 0;
+int n, start_char = 0, end_char = 0, char_ind[26] = {0};
 vector <string> dict;
 vector <pair<int, int> > occurence(26, {0, 0});
 
@@ -21,6 +21,8 @@ main()
 		occurence[_word[0] - 97].first++;
 		occurence[_word[strlen(_word)-1] - 97].second++;
 	}
+
+	sort(dict.begin(), dict.end());
 
 	for(int i = 0; i < 26; i++){
 		if(occurence[i].first > occurence[i].second){
@@ -38,7 +40,10 @@ main()
 		printf("%c %d %d\n", i+97, occurence[i].first, occurence[i].second);
 	}
 
-	sort(dict.begin(), dict.end());
+
+	for(int i = 0; i < n; i++){
+
+	}
 
 	for(int i = 0; i < n; i++){
 		cout << dict[i] << endl;
