@@ -1,2 +1,2 @@
-this it directory for problem solving
-source codes are stored in different branches
+This is for problem solving
+Codes are classified into different branches
