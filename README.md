@@ -1,2 +1,3 @@
-This is for problem solving
-Codes are classified into different branches
+*** Problem Solving ***
+
+Codes are classified into different branches.
