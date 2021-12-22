@@ -1,2 +1,2 @@
-# prob_solving_fall_2021
-class Problem Solving Through Computational Thinking of fall 2021, prof Shin Hong
+this it directory for problem solving
+source codes are stored in different branches
