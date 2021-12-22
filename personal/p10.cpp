@@ -10,12 +10,37 @@ int n,ans_size = 0, start_char = -1, end_char = -1;
 int char_ind[26] = {0};
 int out_degree[26] ={0}, in_degree[26] = {0}, word_cnt[26] = {0};
 vector <string> dict, ans;
-vectoc <string> last_words;
 
 void
 impossible()
 { puts("0"); exit(0); }
 
+pair<int, vector<string> > // 0: append immediately, 1: append lastly
+solve(int from, int to)
+{
+	vector<string> ret, end, mid;
+	pair<int, vector<string> > recv;
+	int status = 0;
+	ret.push_back(dict[char_ind[from]++]);
+	if(word_cnt[to] == 0){
+		return {1, ret};
+	}
+	while(word_cnt[to] != 0){
+		word_cnt[to]--;
+		ans_size++;
+		recv = solve(to, dict[char_ind[to]].back()-97);
+		mid = recv.second;
+		if(recv.first == 1){
+			mid.insert(mid.end(), end.begin(), end.end());
+			end = mid;
+			status = 1;
+		}
+		else ret.insert(ret.end(), mid.begin(), mid.end());
+	}
+	//printf("ret size %ld, end size %ld\n", ret.size(), end.size());
+	ret.insert(ret.end(), end.begin(), end.end());
+	return {status, ret};
+}
 
 int
 main()
@@ -43,7 +68,6 @@ main()
 			else end_char = i;
 		}
 		else impossible();
-		//if(out_degree[i] != 0) printf("%c %d %d\n", i+97, out_degree[i], in_degree[i]);
 	}
 
 	if(start_char == -1){
@@ -57,37 +81,14 @@ main()
 			prev = dict[i][0]-97;
 			char_ind[prev] = i;
 		}
-		//cout << dict[i] << endl;
 	}
-	/*
-	for(int i = 0; i < 26; i++) 
-		if(char_ind[i]!=0)printf("%c start %d\n", i+97, char_ind[i]);
-	for(int i = 0; i < 26; i++)
-		if(word_cnt[i] != 0) printf("word cnt: %c %d\n", i+97, word_cnt[i]);
-	*/
+	word_cnt[start_char]--;
+	ans_size++;
+	pair<int, vector<string> > recv = solve(start_char, dict[char_ind[start_char]].back()-97);
+	ans = recv.second;
 
-	//printf("start : %d end : %d \n", start_char, end_char);
-	int pos = start_char;
-	while(word_cnt[pos] != 0){
-		int next_pos = dict[char_ind[pos]].back()-97;
-		in_degree[next_pos]--;
-		if(in_degree[next_pos] == 0 && word_cnt[pos] != 1){
-			last_words.push_back(dict[char_ind[pos]++]);
-			word_cnt[pos]--;
-			ans_size++;
-			next_pos = dict[char_ind[pos]].back()-97;
-		}
-		ans.push_back(dict[char_ind[pos]++]);
-		word_cnt[pos]--;
-		ans_size++;
-		pos = next_pos;
-	}
-	if(!last_word.empty()) ans.push_back(last_word);
-
-	printf("ans size: %d, n: %d\n", ans_size, n);
-	for(int i = 0; i < ans_size; i++) cout << ans[i] << endl;
-
+	//printf("%d %d %ld\n", n, ans_size, ans.size());
 	if(ans_size == n)
-		for(int i = 0; i < ans_size; i++) cout << ans[i] << endl;
+		for(int i = 0; i < ans_size; i++) cout << ans[i] << "\n";
 	else impossible();
 }
