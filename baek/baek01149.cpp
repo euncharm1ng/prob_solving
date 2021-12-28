@@ -22,8 +22,8 @@ main()
 	for(int i = 0; i < n; i++)
 		scanf("%d %d %d", &color[i][0], &color[i][1], &color[i][2]);
 
-	for(int i = 1; i < n; i++){
+	for(int i = 1; i < n; i++)
 		select_prev_min(i);
-	}
+
 	printf("%d\n", min(color[n-1][0], min(color[n-1][1], color[n-1][2])));
 }
