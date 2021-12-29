@@ -1,12 +1,14 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <queue>
 
 using namespace std;
 
-int v, _a;
+int v, _a, _i;
 short _b;
 vector<pair<int, short> > tree[100001];
+bool visited[100001];
 
 void
 print_tree()
@@ -39,22 +41,30 @@ do_bfs(int curr_node, int from_node)
 				without = res.second;
 		}
 	}
-	return {max1, max(without, max1 + max2)};
+	return make_pair(max1, max(without, max1 + max2));
+}
+
+void
+my_bfs(int curr_node)
+{
+	
 }
 
 int
 main()
 {
+	memset(visited, false, sizeof(false) * 100001);
 	scanf("%d", &v);
 	for(int i = 1; i <= v; i++){
-		scanf("%d", &_a);
-		do{
+		scanf("%d", &_i);
+		while(1){
 			scanf("%d", &_a);
 			if(_a != -1){
 				scanf("%hd", &_b);
-				tree[i].push_back({_a, _b});
+				tree[_i].push_back(make_pair(_a, _b));
 			}
-		}while(_a != -1);
+			else break;
+		}
 	}
 	pair<int, int> res = do_bfs(1, -1);
 	printf("%d\n", max(res.first, res.second));
