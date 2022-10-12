@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -51,4 +52,58 @@ main()
 		else printf("%d\n", dist[i]);
 	}
 	return 0;
+}
+*/
+
+#include <iostream>
+#include <vector>
+#include <queue>
+
+#define pii pair<int, int>
+#define INF 2e9
+
+using namespace std;
+
+priority_queue<pii, vector<pii>, greater<pii> > q;
+vector<pii> graph[20001];
+int dist[20001];
+int vertex, edge, starting_v, start, end_v, weight;
+
+void
+dijstra()
+{
+	for(int i = 1; i <= vertex; i++) dist[i] = INF;
+
+	dist[starting_v] = 0;
+	
+	q.push({0, starting_v});
+	while(!q.empty()){
+		pii curr = q.top(); q.pop();
+		int curr_v = curr.second;
+
+		for(int i = 0; i < graph[curr_v].size(); i++){
+			if(dist[graph[curr_v][i].first] > dist[curr_v] + graph[curr_v][i].second){
+				dist[graph[curr_v][i].first] = dist[curr_v] + graph[curr_v][i].second;
+				q.push({dist[graph[curr_v][i].first], graph[curr_v][i].first});
+			}
+		}
+	}
+}
+
+int
+main()
+{
+	scanf("%d %d", &vertex, &edge);
+	scanf("%d", &starting_v);
+	for(int i = 0; i < edge; i++){
+		scanf("%d %d %d", &start, &end_v, &weight);
+		graph[start].push_back(make_pair(end_v, weight));
+	}
+
+	dijstra();
+
+	for(int i = 1; i <= vertex; i++){
+		if(dist[i] == INF) puts("INF");
+		else printf("%d\n", dist[i]);
+	}
 }

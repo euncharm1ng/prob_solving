@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <cstring>
 
@@ -59,3 +60,33 @@ main()
 	}
 	printf("%d\n", ans);
 }
+*/
+
+// another try with bit masking
+
+
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+char words[50];
+int words_in_bits[50] = {0};
+int n, k;
+
+int
+main()
+{
+	scanf("%d %d", &n, &k);
+	for(int i = 0; i < n; i++){
+		scanf("%s", words);
+		for(int j = 0; j < strlen(words); j++){
+			words_in_bits[i] |= (1 << words[j]-97);
+		}
+	}
+	for(int i = 0; i < n; i++)
+		printf("%x\n", words_in_bits[i]);
+
+}
+
+
